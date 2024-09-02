@@ -88,6 +88,10 @@ dependencies {
     // room database
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
     kapt(libs.androidx.room.compiler)
+
+    // work manager
+    implementation(libs.androidx.work.runtime.ktx)
 }

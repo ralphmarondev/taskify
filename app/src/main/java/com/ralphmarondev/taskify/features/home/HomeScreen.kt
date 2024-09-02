@@ -55,7 +55,7 @@ fun HomeScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { navController.navigate(Screens.Notification) }) {
                         Icon(
                             imageVector = Icons.Outlined.Notifications,
                             contentDescription = ""

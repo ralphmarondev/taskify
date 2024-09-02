@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import com.ralphmarondev.taskify.core.model.Task
 import com.ralphmarondev.taskify.features.home.HomeScreen
 import com.ralphmarondev.taskify.features.newtask.NewTaskScreen
+import com.ralphmarondev.taskify.features.notification.NotificationScreen
 import com.ralphmarondev.taskify.features.settings.SettingScreen
 import com.ralphmarondev.taskify.features.updatetask.UpdateTaskScreen
 import kotlinx.serialization.Serializable
@@ -32,6 +33,9 @@ class Screens {
 
     @Serializable
     object Settings
+
+    @Serializable
+    object Notification
 }
 
 @Composable
@@ -64,6 +68,9 @@ fun AppNavigation(
         }
         composable<Screens.Settings> {
             SettingScreen(navController)
+        }
+        composable<Screens.Notification> {
+            NotificationScreen(navController)
         }
     }
 }
