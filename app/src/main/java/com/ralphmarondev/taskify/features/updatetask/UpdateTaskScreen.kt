@@ -258,7 +258,8 @@ fun UpdateTaskScreen(
                             contentDescription = ""
                         )
                     }
-                }
+                },
+                readOnly = true
             )
             OutlinedTextField(
                 value = endTime,
@@ -289,7 +290,8 @@ fun UpdateTaskScreen(
                             contentDescription = ""
                         )
                     }
-                }
+                },
+                readOnly = true
             )
         }
 

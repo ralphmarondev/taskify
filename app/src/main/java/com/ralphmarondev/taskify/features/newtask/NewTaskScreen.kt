@@ -228,7 +228,8 @@ fun NewTaskScreen(
                             contentDescription = ""
                         )
                     }
-                }
+                },
+                readOnly = true
             )
             OutlinedTextField(
                 value = endTime,
@@ -259,7 +260,8 @@ fun NewTaskScreen(
                             contentDescription = ""
                         )
                     }
-                }
+                },
+                readOnly = true
             )
         }
 

@@ -2,15 +2,18 @@ package com.ralphmarondev.taskify.features.settings
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,7 +44,9 @@ import com.ralphmarondev.taskify.ui.theme.TaskifyTheme
 fun SettingScreen(
     navController: NavHostController
 ) {
+    var newItemsToBottom by remember { mutableStateOf(true) }
     var isDarkMode by remember { mutableStateOf(false) }
+    var showNotification by remember { mutableStateOf(false) }
 
     TaskifyTheme(darkTheme = isDarkMode) {
         Scaffold(
@@ -74,30 +79,96 @@ fun SettingScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
+                item { Spacer(modifier = Modifier.height(5.dp)) }
                 item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 15.dp, vertical = 10.dp)
-                            .wrapContentHeight(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Dark Mode",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.W500
-                        )
-                        Switch(
-                            checked = isDarkMode,
+                    val listOfDisplayOptions = listOf(
+                        DisplayOptions(
+                            title = "Add new items to bottom",
+                            isChecked = newItemsToBottom,
+                            onCheckedChange = { newItemsToBottom = !newItemsToBottom }
+                        ),
+                        DisplayOptions(
+                            title = "Dark Mode",
+                            isChecked = isDarkMode,
                             onCheckedChange = { isDarkMode = !isDarkMode }
                         )
+                    )
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text(
+                            text = "Display Options",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W500,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+
+                        listOfDisplayOptions.forEachIndexed { index, displayOptions ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = displayOptions.title,
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.W500,
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
+                                Switch(
+                                    checked = displayOptions.isChecked,
+                                    onCheckedChange = { displayOptions.onCheckedChange() }
+                                )
+                            }
+                        }
+                    }
+                }
+                item { HorizontalDivider(modifier = Modifier.padding(16.dp)) }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text(
+                            text = "Reminder Defaults",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.W500,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Show Notification",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.W500,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Switch(
+                                checked = showNotification,
+                                onCheckedChange = { showNotification = !showNotification }
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+
+private data class DisplayOptions(
+    val title: String,
+    val isChecked: Boolean,
+    val onCheckedChange: () -> Unit
+)
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
