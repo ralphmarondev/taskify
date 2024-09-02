@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,8 @@ fun DateTimePicker(
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = calendar.timeInMillis)
     val timePickerState = rememberTimePickerState()
 
+    val isTablet = LocalConfiguration.current.screenWidthDp >= 600
+
     ModalBottomSheet(onDismissRequest = onDismissRequest) {
         ElevatedCard(
             modifier = Modifier
@@ -52,18 +55,19 @@ fun DateTimePicker(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 DatePicker(
                     state = datePickerState,
                     modifier = Modifier
-                        .fillMaxWidth()
+//                        .fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 TimePicker(
                     state = timePickerState,
                     modifier = Modifier
-                        .fillMaxWidth()
+//                        .fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -78,7 +82,7 @@ fun DateTimePicker(
                         Text(
                             text = "CANCEL",
                             fontFamily = FontFamily.Monospace,
-                            fontSize = 16.sp,
+                            fontSize = if(isTablet) 22.sp else 16.sp,
                             fontWeight = FontWeight.W600
                         )
                     }
@@ -102,7 +106,7 @@ fun DateTimePicker(
                         Text(
                             text = "SAVE",
                             fontFamily = FontFamily.Monospace,
-                            fontSize = 16.sp,
+                            fontSize = if(isTablet) 22.sp else 16.sp,
                             fontWeight = FontWeight.W600
                         )
                     }

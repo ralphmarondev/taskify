@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +48,8 @@ fun SettingScreen(
     var newItemsToBottom by remember { mutableStateOf(true) }
     var isDarkMode by remember { mutableStateOf(false) }
     var showNotification by remember { mutableStateOf(false) }
+
+    val isTablet = LocalConfiguration.current.screenWidthDp >= 600
 
     TaskifyTheme(darkTheme = isDarkMode) {
         Scaffold(
@@ -78,6 +81,10 @@ fun SettingScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .padding(
+                        horizontal = if (isTablet) 120.dp else 0.dp,
+                        vertical = if (isTablet) 10.dp else 0.dp
+                    )
             ) {
                 item { Spacer(modifier = Modifier.height(5.dp)) }
                 item {
@@ -101,7 +108,7 @@ fun SettingScreen(
                     ) {
                         Text(
                             text = "Display Options",
-                            fontSize = 20.sp,
+                            fontSize = if (isTablet) 24.sp else 20.sp,
                             fontWeight = FontWeight.W500,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -115,7 +122,7 @@ fun SettingScreen(
                             ) {
                                 Text(
                                     text = displayOptions.title,
-                                    fontSize = 18.sp,
+                                    fontSize = if(isTablet) 20.sp else 18.sp,
                                     fontWeight = FontWeight.W500,
                                     color = MaterialTheme.colorScheme.secondary
                                 )
@@ -136,7 +143,7 @@ fun SettingScreen(
                     ) {
                         Text(
                             text = "Reminder Defaults",
-                            fontSize = 20.sp,
+                            fontSize = if(isTablet) 24.sp else 20.sp,
                             fontWeight = FontWeight.W500,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -148,7 +155,7 @@ fun SettingScreen(
                         ) {
                             Text(
                                 text = "Show Notification",
-                                fontSize = 18.sp,
+                                fontSize = if(isTablet) 20.sp else 18.sp,
                                 fontWeight = FontWeight.W500,
                                 color = MaterialTheme.colorScheme.secondary
                             )

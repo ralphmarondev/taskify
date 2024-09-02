@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +32,8 @@ import androidx.navigation.NavHostController
 fun NotificationScreen(
     navController: NavHostController
 ) {
+    val isTablet = LocalConfiguration.current.screenWidthDp >= 600
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -66,7 +69,7 @@ fun NotificationScreen(
             item {
                 Text(
                     text = "Hello there! Ralph Maron Eda is here!",
-                    fontSize = 20.sp,
+                    fontSize = if(isTablet) 24.sp else 20.sp,
                     fontWeight = FontWeight.W500,
                     textAlign = TextAlign.Justify,
                     modifier = Modifier

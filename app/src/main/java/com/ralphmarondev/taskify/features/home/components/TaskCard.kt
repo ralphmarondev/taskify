@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,18 +21,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.taskify.core.model.Task
 import com.ralphmarondev.taskify.core.navigation.Screens
-import com.ralphmarondev.taskify.ui.theme.TaskifyTheme
 
 @Composable
-fun TaskCard(
+fun TaskCardMobile(
     task: Task,
     navController: NavHostController,
     modifier: Modifier = Modifier
@@ -102,29 +102,75 @@ fun TaskCard(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-private fun TaskCardPreview() {
-    TaskifyTheme {
-        LazyColumn(
+fun TaskCardTablet(
+    task: Task,
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth(0.8f) // Set a maximum width for better alignment on larger screens
+            .padding(horizontal = 24.dp, vertical = 16.dp), // Increased padding for spacious layout
+        shape = RoundedCornerShape(16.dp), // Rounded corners for a modern look
+        elevation = CardDefaults.cardElevation(8.dp) // Slightly higher elevation for more depth
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            items(3) {
-                TaskCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    task = Task(
-                        id = 0,
-                        title = "Eat",
-                        description = "I'm already hungry. I need to eat.",
-                        startTime = "2024-09-02",
-                        endTime = "2024-10-05",
-                        createDate = "2024-09-02"
-                    ),
-                    navController = rememberNavController()
+            Column(
+                modifier = Modifier
+                    .weight(8f)
+            ) {
+                Text(
+                    text = task.title,
+                    maxLines = 1,
+                    fontSize = 24.sp, // Slightly larger text for tablet
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold // Bold title for emphasis
+                )
+                Spacer(modifier = Modifier.height(8.dp)) // Space between title and description
+                Text(
+                    text = task.description,
+                    maxLines = 2, // Allow more lines for description on a larger screen
+                    fontSize = 20.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Created: ${task.createDate}",
+                    maxLines = 1,
+                    fontSize = 16.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
+            Spacer(modifier = Modifier.weight(0.2f))
+            IconButton(
+                onClick = {
+                    navController.navigate(
+                        Screens.UpdateTask(
+                            id = task.id,
+                            title = task.title,
+                            description = task.description,
+                            startTime = task.startTime,
+                            endTime = task.endTime,
+                            createDate = task.createDate
+                        )
+                    )
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = "Edit Task",
+                    tint = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.size(24.dp) // Adjust icon size for better visibility
                 )
             }
         }
