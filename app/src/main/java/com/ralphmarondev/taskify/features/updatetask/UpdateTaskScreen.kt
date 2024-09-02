@@ -1,16 +1,23 @@
 package com.ralphmarondev.taskify.features.updatetask
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -131,7 +139,7 @@ fun UpdateTaskScreen(
                                     snackbarState.showSnackbar(
                                         message = "Task updated successfully."
                                     )
-                                    delay(50)
+                                    delay(5)
                                     navController.popBackStack()
                                 }
                             } catch (ex: Exception) {
@@ -314,14 +322,53 @@ fun UpdateTaskScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(15.dp),
+                        .defaultMinSize(minHeight = 200.dp)
+                        .padding(15.dp)
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Hello there!",
+                        text = "Are you sure you want to permanently delete this task?",
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.W500
+                        fontWeight = FontWeight.W500,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 15.dp),
+                        textAlign = TextAlign.Justify,
+                        color = MaterialTheme.colorScheme.secondary
                     )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        ElevatedButton(onClick = { deleteTask = !deleteTask }) {
+                            Text(
+                                text = "CANCEL",
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.W600,
+                                fontSize = 16.sp
+                            )
+                        }
+                        Button(
+                            onClick = {
+                                viewModel.deleteTask(task.id)
+                                deleteTask = !deleteTask
+                                navController.popBackStack()
+                            }
+                        ) {
+                            Text(
+                                text = "CONFIRM",
+                                fontFamily = FontFamily.Monospace,
+                                fontWeight = FontWeight.W600,
+                                fontSize = 16.sp
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(900.dp))
                 }
             }
         }

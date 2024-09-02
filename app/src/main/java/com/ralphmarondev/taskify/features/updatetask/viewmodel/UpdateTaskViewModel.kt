@@ -54,4 +54,16 @@ class UpdateTaskViewModel : ViewModel() {
             Log.d("ROOM", "Error [update]: ${ex.message}")
         }
     }
+
+    fun deleteTask(id: Int) {
+        try {
+            Log.d("ROOM", "Deleting: $id")
+            viewModelScope.launch(Dispatchers.IO) {
+                dao.deleteTask(id)
+            }
+            Log.d("ROOM", "Deleted successfully!")
+        } catch (ex: Exception) {
+            Log.d("ROOM", "Error [delete]: ${ex.message}")
+        }
+    }
 }
