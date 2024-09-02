@@ -1,12 +1,16 @@
 package com.ralphmarondev.taskify.features.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PostAdd
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,11 +27,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.ralphmarondev.taskify.core.navigation.Screens
 import com.ralphmarondev.taskify.ui.theme.TaskifyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavHostController
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,6 +60,17 @@ fun HomeScreen() {
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { navController.navigate(Screens.NewTask) }) {
+                Icon(
+                    imageVector = Icons.Outlined.PostAdd,
+                    contentDescription = ""
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "NEW")
+            }
         }
     ) { innerPadding ->
         LazyColumn(
@@ -79,6 +99,8 @@ fun HomeScreen() {
 @Composable
 private fun HomeScreenPreview() {
     TaskifyTheme {
-        HomeScreen()
+        HomeScreen(
+            navController = rememberNavController()
+        )
     }
 }

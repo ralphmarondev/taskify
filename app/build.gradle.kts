@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -72,4 +73,11 @@ dependencies {
 
     // extended-icon
     implementation(libs.androidx.material.icons.extended.android)
+
+    // for viewModel on composable
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // navigation [with type safe args]
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 }
