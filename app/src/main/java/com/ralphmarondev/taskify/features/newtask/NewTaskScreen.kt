@@ -23,6 +23,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -35,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ralphmarondev.taskify.features.newtask.components.DateTimePickerDialog
 import com.ralphmarondev.taskify.features.newtask.viewmodel.NewTaskViewModel
 import com.ralphmarondev.taskify.ui.theme.TaskifyTheme
 
@@ -46,6 +50,11 @@ fun NewTaskScreen(
 ) {
     val title by viewModel.title.collectAsState()
     val description by viewModel.description.collectAsState()
+    val startTime by viewModel.startTime.collectAsState()
+    val endTime by viewModel.endTime.collectAsState()
+
+    var startTimeDialog by remember { mutableStateOf(false) }
+    var endTimeDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -146,9 +155,10 @@ fun NewTaskScreen(
                 minLines = 4
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedTextField(
-                value = "12:00 AM 02-09-2024",
+                value = startTime,
                 onValueChange = { },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -170,7 +180,7 @@ fun NewTaskScreen(
                 },
                 maxLines = 1,
                 trailingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { startTimeDialog = !startTimeDialog }) {
                         Icon(
                             imageVector = Icons.Outlined.EditCalendar,
                             contentDescription = ""
@@ -179,7 +189,7 @@ fun NewTaskScreen(
                 }
             )
             OutlinedTextField(
-                value = "12:00 PM 02-10-2024",
+                value = endTime,
                 onValueChange = { },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -201,12 +211,31 @@ fun NewTaskScreen(
                 },
                 maxLines = 1,
                 trailingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { endTimeDialog = !endTimeDialog }) {
                         Icon(
                             imageVector = Icons.Outlined.EditCalendar,
                             contentDescription = ""
                         )
                     }
+                }
+            )
+        }
+
+        if (startTimeDialog) {
+            DateTimePickerDialog(
+                onDismissRequest = { startTimeDialog = !startTimeDialog },
+                onDateTimeSelected = { startTime ->
+                    viewModel.setStartTime(startTime)
+                    startTimeDialog = !startTimeDialog
+                }
+            )
+        }
+        if (endTimeDialog) {
+            DateTimePickerDialog(
+                onDismissRequest = { endTimeDialog = !endTimeDialog },
+                onDateTimeSelected = { endTime ->
+                    viewModel.setEndTime(endTime)
+                    endTimeDialog = !endTimeDialog
                 }
             )
         }

@@ -18,4 +18,18 @@ class NewTaskViewModel : ViewModel() {
     fun setDescription(value: String) {
         _description.value = value
     }
+
+    private val _startTime = MutableStateFlow("")
+    val startTime: StateFlow<String> get() = _startTime
+
+    fun setStartTime(value: String) {
+        _startTime.value = value
+    }
+
+    private val _endTime = MutableStateFlow("")
+    val endTime: StateFlow<String> get() = _endTime
+
+    fun setEndTime(value: String) {
+        _endTime.value = value
+    }
 }
