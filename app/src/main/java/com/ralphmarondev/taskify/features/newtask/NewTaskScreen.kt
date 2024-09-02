@@ -111,7 +111,7 @@ fun NewTaskScreen(
                                     snackbarState.showSnackbar(
                                         message = "Task saved successfully."
                                     )
-                                    delay(1000)
+                                    delay(100)
                                     navController.popBackStack()
                                 }
                             } catch (ex: Exception) {
