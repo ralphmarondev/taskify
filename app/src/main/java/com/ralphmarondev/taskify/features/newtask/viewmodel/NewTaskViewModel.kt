@@ -1,8 +1,14 @@
 package com.ralphmarondev.taskify.features.newtask.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.taskify.core.application.TaskifyApp
+import com.ralphmarondev.taskify.core.model.Task
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class NewTaskViewModel : ViewModel() {
     private val _title = MutableStateFlow("")
@@ -31,5 +37,22 @@ class NewTaskViewModel : ViewModel() {
 
     fun setEndTime(value: String) {
         _endTime.value = value
+    }
+
+
+    // CRUD OPERATION
+    private val dao = TaskifyApp.database.dao()
+    fun createNewTask(
+        task: Task
+    ) {
+        try {
+            Log.d("ROOM", "Saving $task")
+            viewModelScope.launch(Dispatchers.IO) {
+                dao.createNewTask(task)
+            }
+            Log.d("ROOM", "Saved successfully!")
+        } catch (ex: Exception) {
+            Log.d("ROOM", "Error [create]: ${ex.message}")
+        }
     }
 }

@@ -17,6 +17,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -25,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,9 +41,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ralphmarondev.taskify.core.model.Task
 import com.ralphmarondev.taskify.features.newtask.components.DateTimePickerDialog
 import com.ralphmarondev.taskify.features.newtask.viewmodel.NewTaskViewModel
 import com.ralphmarondev.taskify.ui.theme.TaskifyTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,6 +61,9 @@ fun NewTaskScreen(
 
     var startTimeDialog by remember { mutableStateOf(false) }
     var endTimeDialog by remember { mutableStateOf(false) }
+
+    val snackbarState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -83,7 +92,43 @@ fun NewTaskScreen(
         bottomBar = {
             BottomAppBar(containerColor = Color.Transparent) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        if (
+                            title.isNotEmpty() &&
+                            description.isNotEmpty() &&
+                            startTime.isNotEmpty() &&
+                            endTime.isNotEmpty()
+                        ) {
+                            val task = Task(
+                                title = title,
+                                description = description,
+                                startTime = startTime,
+                                endTime = endTime
+                            )
+                            try {
+                                viewModel.createNewTask(task)
+                                scope.launch {
+                                    snackbarState.showSnackbar(
+                                        message = "Task saved successfully."
+                                    )
+                                    delay(1000)
+                                    navController.popBackStack()
+                                }
+                            } catch (ex: Exception) {
+                                scope.launch {
+                                    snackbarState.showSnackbar(
+                                        message = "Failed: ${ex.message}"
+                                    )
+                                }
+                            }
+                        } else {
+                            scope.launch {
+                                snackbarState.showSnackbar(
+                                    message = "Please fill in all fields."
+                                )
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 15.dp, vertical = 10.dp)
@@ -98,7 +143,8 @@ fun NewTaskScreen(
                     )
                 }
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

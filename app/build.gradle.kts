@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    kotlin("kapt")
 }
 
 android {
@@ -80,4 +81,13 @@ dependencies {
     // navigation [with type safe args]
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    // for observeAsState()
+    implementation(libs.compose.runtime.livedata)
+
+    // room database
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
 }
