@@ -54,7 +54,7 @@ fun HomeScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { navController.navigate(Screens.Settings) }) {
                         Icon(
                             imageVector = Icons.Outlined.Settings,
                             contentDescription = ""
@@ -89,12 +89,13 @@ fun HomeScreen(
             item {
                 AnimatedVisibility(visible = tasks.isNullOrEmpty()) {
                     Text(
-                        text = "Hello there! Ralph Maron Eda is here!",
+                        text = "No tasks found.",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W500,
                         color = MaterialTheme.colorScheme.secondary,
                         textAlign = TextAlign.Justify,
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(16.dp)
                     )
                 }

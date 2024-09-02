@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.taskify.features.home.HomeScreen
 import com.ralphmarondev.taskify.features.newtask.NewTaskScreen
+import com.ralphmarondev.taskify.features.settings.SettingScreen
 import kotlinx.serialization.Serializable
 
 class Screens {
@@ -15,6 +16,9 @@ class Screens {
 
     @Serializable
     object NewTask
+
+    @Serializable
+    object Settings
 }
 
 @Composable
@@ -30,6 +34,9 @@ fun AppNavigation(
         }
         composable<Screens.NewTask> {
             NewTaskScreen(navController)
+        }
+        composable<Screens.Settings> {
+            SettingScreen(navController)
         }
     }
 }

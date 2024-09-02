@@ -201,8 +201,6 @@ fun NewTaskScreen(
                 minLines = 4
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             OutlinedTextField(
                 value = startTime,
                 onValueChange = { },
