@@ -104,6 +104,7 @@ fun HomeScreen(
                 items(it.size) { index ->
                     TaskCard(
                         task = tasks!![index],
+                        navController = navController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)

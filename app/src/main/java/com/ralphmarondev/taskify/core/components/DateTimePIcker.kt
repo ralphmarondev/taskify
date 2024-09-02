@@ -1,4 +1,4 @@
-package com.ralphmarondev.taskify.features.newtask.components
+package com.ralphmarondev.taskify.core.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +15,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
@@ -24,14 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateTimePickerDialog(
+fun DateTimePicker(
     onDismissRequest: () -> Unit,
     onDateTimeSelected: (String) -> Unit
 ) {
@@ -39,7 +39,7 @@ fun DateTimePickerDialog(
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = calendar.timeInMillis)
     val timePickerState = rememberTimePickerState()
 
-    Dialog(onDismissRequest = onDismissRequest) {
+    ModalBottomSheet(onDismissRequest = onDismissRequest) {
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,7 +49,6 @@ fun DateTimePickerDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 DatePicker(
@@ -67,7 +66,8 @@ fun DateTimePickerDialog(
                 Spacer(modifier = Modifier.height(24.dp))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(15.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {

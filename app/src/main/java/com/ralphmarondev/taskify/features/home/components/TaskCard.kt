@@ -23,12 +23,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.taskify.core.model.Task
+import com.ralphmarondev.taskify.core.navigation.Screens
 import com.ralphmarondev.taskify.ui.theme.TaskifyTheme
 
 @Composable
 fun TaskCard(
     task: Task,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -73,7 +77,20 @@ fun TaskCard(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(
+                    onClick = {
+                        navController.navigate(
+                            Screens.UpdateTask(
+                                id = task.id,
+                                title = task.title,
+                                description = task.description,
+                                startTime = task.startTime,
+                                endTime = task.endTime,
+                                createDate = task.createDate
+                            )
+                        )
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Outlined.Edit,
                         contentDescription = "",
@@ -100,12 +117,14 @@ private fun TaskCardPreview() {
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     task = Task(
+                        id = 0,
                         title = "Eat",
                         description = "I'm already hungry. I need to eat.",
                         startTime = "2024-09-02",
                         endTime = "2024-10-05",
                         createDate = "2024-09-02"
-                    )
+                    ),
+                    navController = rememberNavController()
                 )
             }
         }

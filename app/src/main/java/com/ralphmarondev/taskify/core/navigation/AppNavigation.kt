@@ -5,9 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.ralphmarondev.taskify.core.model.Task
 import com.ralphmarondev.taskify.features.home.HomeScreen
 import com.ralphmarondev.taskify.features.newtask.NewTaskScreen
 import com.ralphmarondev.taskify.features.settings.SettingScreen
+import com.ralphmarondev.taskify.features.updatetask.UpdateTaskScreen
 import kotlinx.serialization.Serializable
 
 class Screens {
@@ -16,6 +19,16 @@ class Screens {
 
     @Serializable
     object NewTask
+
+    @Serializable
+    data class UpdateTask(
+        val id: Int,
+        val title: String,
+        val description: String,
+        val startTime: String,
+        val endTime: String,
+        val createDate: String
+    )
 
     @Serializable
     object Settings
@@ -34,6 +47,20 @@ fun AppNavigation(
         }
         composable<Screens.NewTask> {
             NewTaskScreen(navController)
+        }
+        composable<Screens.UpdateTask> {
+            val args = it.toRoute<Screens.UpdateTask>()
+            UpdateTaskScreen(
+                navController = navController,
+                task = Task(
+                    id = args.id,
+                    title = args.title,
+                    description = args.description,
+                    startTime = args.startTime,
+                    endTime = args.endTime,
+                    createDate = args.createDate
+                )
+            )
         }
         composable<Screens.Settings> {
             SettingScreen(navController)
